@@ -32,12 +32,16 @@
 (define (generate-weights n m)
   (map
    (lambda (i)
-     (map (lambda (j) (random)) (range m)))
+     (map (lambda (j)
+            (random))
+          (range m)))
    (range n)))
 
 (define (educate-neuron weights inputs value)
   (let [(output (neuron weights inputs))]
-    (map (lambda (w i) (+ w (* 0.1 i (- value output)))) weights inputs)))
+    (map (lambda (w i)
+           (+ w (* 0.1 i (- value output))))
+         weights inputs)))
 
 (define (educate-perceptron all-weights inputs values)
   (map
@@ -51,7 +55,12 @@
      (lambda (p)
        (let [(inputs (get-inputs p))
              (class (get-class p))]
-         (set! all-weights (educate-perceptron all-weights inputs (if (= class 0) '(0 1) '(1 0))))))
+         (set! all-weights
+               (educate-perceptron all-weights
+                                   inputs
+                                   (if (= class 0)
+                                       '(0 1)
+                                       '(1 0))))))
      points)
     all-weights))
 
@@ -66,8 +75,7 @@
 (plot
  (list
   (points yes-points #:color "green")
-  (points no-points #:color "red")
-  ))
+  (points no-points #:color "red")))
 
 (define all-weights (educate all-points))
 (define p (first all-points))
@@ -75,13 +83,19 @@
 (writeln all-weights)
 (writeln p)
 
-(define all-points-test (map (lambda (p) (list (first p) (second p) (determine all-weights (get-inputs p)))) (get-points "bank.txt")))
+(define all-points-test (map
+                         (lambda (p)
+                           (list
+                            (first p)
+                            (second p)
+                            (determine all-weights (get-inputs p))))
+                         (get-points "bank.txt")))
+
 (define yes-points-test (select-points all-points 1))
 (define no-points-test (select-points all-points 0))
 
 (plot
  (list
   (points yes-points-test #:color "green")
-  (points no-points-test #:color "red")
-  ))
+  (points no-points-test #:color "red")))
 
