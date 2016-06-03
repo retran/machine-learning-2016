@@ -91,8 +91,8 @@
                             (determine all-weights (get-inputs p))))
                          (get-points "bank.txt")))
 
-(define yes-points-test (select-points all-points 1))
-(define no-points-test (select-points all-points 0))
+(define yes-points-test (select-points all-points-test 1))
+(define no-points-test (select-points all-points-test 0))
 
 (plot
  (list
