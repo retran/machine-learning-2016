@@ -1,0 +1,22 @@
+#lang racket
+
+(require plot)
+
+(define (get-points filename)
+  (call-with-input-file filename
+    (lambda (in)
+      (read in))))
+
+(define (select-points points criterion)
+  (map (lambda (p) (list (first p) (second p)))
+       (filter (lambda (p) (= criterion (third p))) points)))
+
+(define all-points (get-points "bank_exp.txt"))
+(define yes-points (select-points all-points 1))
+(define no-points (select-points all-points 0))
+
+(plot
+ (list
+  (points yes-points #:color "green")
+  (points no-points #:color "red")
+  ))
